@@ -5,7 +5,7 @@
           id="dropper" enctype="multipart/form-data">
     </form>
     <div>
-        <a id = 'download' href="">None</a>
+        <a id = 'download' href=""></a>
     </div>
 
     <script type="application/javascript">
@@ -18,9 +18,7 @@
             url: '/upload',
             maxFilesize: fileMaxSize, 
             success: function(file, resp) {
-                console.log(file);
                 obj = JSON.parse(resp);
-                console.log(obj);
                 download.href = obj.file
                 download.innerHTML = obj.file
             }

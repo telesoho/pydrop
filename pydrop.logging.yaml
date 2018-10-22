@@ -29,9 +29,9 @@ loggers:
        propagate: True
    pydrop:
        handlers: ['default','error', 'file']
-       level: 'DEBUG'
+       level: 'INFO'
        propagate: False
    cherrypy:
        handlers: ['default', 'error', 'file']
-       level: 'DEBUG'
+       level: 'INFO'
        propagate: False
