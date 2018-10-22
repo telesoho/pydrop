@@ -1,5 +1,7 @@
 # pydrop
 
+Upload big file to server.
+
 # Requerments
 
 * Python 3.6

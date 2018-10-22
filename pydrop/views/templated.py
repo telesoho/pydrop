@@ -27,6 +27,7 @@ def upload():
     file = request.files['file']
 
     save_path = os.path.join(config.data_dir, secure_filename(file.filename))
+    data_url = os.path.join(config.data_url,  secure_filename(file.filename))
     current_chunk = int(request.form['dzchunkindex'])
 
     # If the file already exists it's ok if we are appending to it,
@@ -62,5 +63,5 @@ def upload():
                   f'for file {file.filename} complete')
 
     # return make_response((f"Chunk upload successful", 200))
-    return make_response(jsonify(message='Chunk upload successful', file=save_path), 200)
+    return make_response(jsonify(message='Chunk upload successful', file=data_url), 200)
 
