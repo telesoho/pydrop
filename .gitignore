@@ -1,0 +1,4 @@
+.venv/
+pydrop.log
+cache/
+__pycache__/

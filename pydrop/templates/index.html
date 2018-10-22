@@ -1,0 +1,23 @@
+{% extends "base_layout.html" %}
+{% block title %}File Dropper{% endblock %}
+{% block content %}
+    <form method="POST" action='/upload' class="dropzone dz-clickable"
+          id="dropper" enctype="multipart/form-data">
+    </form>
+
+    <script type="application/javascript">
+        Dropzone.options.dropper = {
+            paramName: 'file',
+            chunking: true,
+            forceChunking: true,
+            url: '/upload',
+            maxFilesize: 50*1024*1024*1024, //50 GB 
+            chunkSize: 1024 * 30, // bytes
+            success: function(file, resp) {
+                    console.log(file);
+                    console.log(resp);
+            }
+        }
+    </script>
+{% endblock %}
+
