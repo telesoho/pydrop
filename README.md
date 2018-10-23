@@ -4,7 +4,7 @@ Upload big file to server.
 
 # Requerments
 
-* Python 3.6
+- Python 3.6
 
 # Install
 
@@ -14,9 +14,9 @@ python install -r reuirements.txt
 
 # Configure
 
-* pydrop.config.yaml
-* pydrop.logging.yaml
-* pydrop/config.py
+- pydrop.config.yaml
+- pydrop.logging.yaml
+- pydrop/config.py
 
 # Run
 
