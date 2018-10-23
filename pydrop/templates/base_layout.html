@@ -10,9 +10,7 @@
     <link rel="stylesheet"
      href="/static/basic.css"/>
 
-    <script type="application/javascript"
-     src="static/dropzone.js">
-    </script>
+
 
     {% block head %}
     {% endblock %}
@@ -27,6 +25,93 @@
     {% endblock %}
 </div>
 
+<script src="static/jquery.js"></script>
+<script type="application/javascript"
+  src="static/dropzone.js">
+</script>
+
+<script type="application/javascript">
+    fileMaxSize = 50*1024; //50 G 
+    Dropzone.options.dropper = {
+        addRemoveLinks:true,
+        paramName: 'file',
+        chunking: true,
+        forceChunking: true,
+        dictDefaultMessage: `Drop files here to upload. Max size ${fileMaxSize} M`,
+        url: '/upload',
+        maxFilesize: fileMaxSize, 
+        removedfile: function (file) {
+            if (file.previewElement != null && file.previewElement.parentNode != null) {
+                file.previewElement.parentNode.removeChild(file.previewElement);
+            }
+            console.log("remove", file.upload.filename)
+            $.ajax({
+                type: "POST",
+                url: "/remove",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (res) {
+                    console.log(res);
+                },
+                data: JSON.stringify({filename: file.upload.filename})
+            });            
+        },
+        success: function(file, resp) {
+            obj = JSON.parse(file.xhr.response);
+            file._copyUrlLink = Dropzone.createElement(`<a class="dz-remove" href="javascript:clickToCopy('${obj.file}');">Copy link</a>`);
+            file.previewElement.appendChild(file._copyUrlLink);
+        },
+        uploadprogress: function (file, progress, bytesSent) {
+            time_remain = 0
+            if (typeof (file.lastTimer) === "undefined") {
+                file.lastTimer = Date.now()
+            } else {
+                timespan = Date.now() - file.lastTimer
+                time_remain = Math.floor((timespan * 100 / progress - timespan) / 1000)
+            }
+            if (file.previewElement) {
+                for (var _iterator8 = file.previewElement.querySelectorAll("[data-dz-uploadprogress]"), _isArray8 = true, _i8 = 0, _iterator8 = _isArray8 ? _iterator8 : _iterator8[Symbol.iterator](); ;) {
+                    var _ref7;
+
+                    if (_isArray8) {
+                        if (_i8 >= _iterator8.length) break;
+                        _ref7 = _iterator8[_i8++];
+                    } else {
+                        _i8 = _iterator8.next();
+                        if (_i8.done) break;
+                        _ref7 = _i8.value;
+                    }
+                    var node = _ref7;
+                    node.nodeName === 'PROGRESS' ? node.value = progress : node.style.width = progress + "%";
+                    if(time_remain > 60 * 60) {
+                        time_remain = Math.floor(time_remain / 3600)
+                        node.nextSibling.innerHTML = `${time_remain}'h`
+                    } else if(time_remain > 60) {
+                        time_remain = Math.floor(time_remain / 60)
+                        node.nextSibling.innerHTML = `${time_remain}'m`
+                    } else if (time_remain > 0) {
+                        node.nextSibling.innerHTML = `${time_remain}'s`
+                    }
+                }
+            }
+        }
+    }
+
+    function clickToCopy(url) {
+        /* Get the text field */
+        var copyText = document.getElementById("downloadUrl");
+        copyText.value = url
+
+        /* Select the text field */
+        copyText.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        /* Alert the copied text */
+        alert("The follow text has been copied to clipboard:\n" + copyText.value);
+    }
+</script>
 
 </body>
 </html>

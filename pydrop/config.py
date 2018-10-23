@@ -21,7 +21,7 @@ config = Box({
     "session_secret": 'bad_secret',  # make real one with os.urandom(32).hex()
     "data_dir": os.path.join(here, "static/data"),
     "ssl": False,
-    "data_url": '/static/data'
+    "data_url": 'static/data'
 })
 
 # TODO add find functions for configs

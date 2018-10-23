@@ -4,25 +4,8 @@
     <form method="POST" action='/upload' class="dropzone dz-clickable"
           id="dropper" enctype="multipart/form-data">
     </form>
-    <div>
-        <a id = 'download' href=""></a>
+    <div style="padding: 10px;">
+        <input type="text" value="" id="downloadUrl" style="width:0px;top:-1000px;position:fixed">
     </div>
-
-    <script type="application/javascript">
-        fileMaxSize = 50*1024; //50 G 
-        Dropzone.options.dropper = {
-            paramName: 'file',
-            chunking: true,
-            forceChunking: true,
-            dictDefaultMessage: `Drop files here to upload. Max size ${fileMaxSize} M`,
-            url: '/upload',
-            maxFilesize: fileMaxSize, 
-            success: function(file, resp) {
-                obj = JSON.parse(resp);
-                download.href = obj.file
-                download.innerHTML = obj.file
-            }
-        }
-    </script>
 {% endblock %}
 

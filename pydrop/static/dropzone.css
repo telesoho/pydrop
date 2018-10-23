@@ -338,6 +338,8 @@
       border-radius: 8px;
       overflow: hidden; }
       .dropzone .dz-preview .dz-progress .dz-upload {
+        text-align: center;
+        font-size: 12px;
         background: #333;
         background: linear-gradient(to bottom, #666, #444);
         position: absolute;
@@ -350,6 +352,16 @@
         -ms-transition: width 300ms ease-in-out;
         -o-transition: width 300ms ease-in-out;
         transition: width 300ms ease-in-out; }
+      .dropzone .dz-preview .dz-progress .dz-time-remain {
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        font-size: 12px;
+        top: 0px;
+        height: 100%;
+        padding: 0;
+        position: absolute;
+      }
     .dropzone .dz-preview.dz-error .dz-error-message {
       display: block; }
     .dropzone .dz-preview.dz-error:hover .dz-error-message {

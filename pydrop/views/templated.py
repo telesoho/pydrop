@@ -5,6 +5,7 @@ import os
 
 from flask import jsonify, render_template, Blueprint, request, make_response
 from werkzeug.utils import secure_filename
+import hashlib
 
 from pydrop.config import config
 
@@ -21,13 +22,32 @@ def index():
                            page_name='Main',
                            project_name="pydrop")
 
+@blueprint.route('/remove', methods=['POST'])
+def remove():
+    if request.headers['Content-Type'] != 'application/json':
+        return make_response(jsonify(message='Invalid parameter(json)'), 400)
+    data = request.get_json()
+    log.debug(data)
+    filename, file_extension = os.path.splitext(data.get('filename'))
+    filename = hashlib.md5(data.get('filename').encode()).hexdigest()
+    save_path = os.path.join(config.data_dir, filename + file_extension)
+
+    try:
+        os.remove(save_path)
+    except OSError as e: # this would be "except OSError, e:" before Python 2.6
+        if e.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
+            return make_response(jsonify(message=f'remove {save_path} failed'), 400)
+
+    return make_response(jsonify(message='removed successful', data=data), 200)
 
 @blueprint.route('/upload', methods=['POST'])
 def upload():
     file = request.files['file']
-
-    save_path = os.path.join(config.data_dir, secure_filename(file.filename))
-    data_url = os.path.join(config.data_url,  secure_filename(file.filename))
+    log.debug(file.filename)
+    filename, file_extension = os.path.splitext(file.filename)
+    filename = hashlib.md5(file.filename.encode()).hexdigest()
+    save_path = os.path.join(config.data_dir, filename + file_extension)
+    data_url = f'http://{request.host}/{config.data_url}/{filename}{file_extension}' 
     current_chunk = int(request.form['dzchunkindex'])
 
     # If the file already exists it's ok if we are appending to it,
