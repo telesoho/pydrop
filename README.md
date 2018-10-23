@@ -6,8 +6,19 @@ Upload big file to server.
 
 * Python 3.6
 
+# Install
 
-Usage:
+```sh
+python install -r reuirements.txt
+```
+
+# Configure
+
+* pydrop.config.yaml
+* pydrop.logging.yaml
+* pydrop/config.py
+
+# Run
 
 ```sh
 python pydrop
